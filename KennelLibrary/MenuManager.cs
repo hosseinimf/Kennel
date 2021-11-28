@@ -48,7 +48,7 @@ namespace KennelLibrary
         public void ListOwners(List<IOwner> OwnerList)
         {
             services.Print("----------LIST OF OWNERS-----------");
-            services.Print(String.Format(" {0,-20}  {1,-30}", $"Owner name", $"Owner Id"));
+            services.Print(String.Format(" {0,-20}  {1,-30}", $"Owner name", $"Owner Id\n"));
             foreach (var item in OwnerList)
             {
                 services.Print(String.Format(" {0,-20}  {1,-30}", $"{item.OwnerName}", $"{item.OwnerId}"));
@@ -59,11 +59,11 @@ namespace KennelLibrary
         public void ListAnimals(List<IAnimal> AnimalList)
         {
             services.Print("----------LIST OF Animals-----------");
-            services.Print(String.Format(" {0,-20}  {1,-30}", $"Animal", $"Owner"));
+            services.Print(String.Format(" {0,-20}  {1,-30}   {2,-30}", $"Animal", $"Owner", $"Status\n"));
 
             foreach (var item in AnimalList)
             {
-                services.Print(String.Format(" {0,-20}  {1,-30}", $"{item.Name}", $"{item.OwnerName}"));
+                services.Print(String.Format(" {0,-20}  {1,-30}   {2,-30}", $"{item.Name}", $"{item.OwnerName}", $"{item.Status.ToString()}"));
             }
         }
 

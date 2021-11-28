@@ -15,21 +15,25 @@ namespace KennelLibrary
 
         public string GetStringValue()
         {
-            return Console.ReadLine();
+            string str = Console.ReadLine();
+
+            while (String.IsNullOrWhiteSpace(str))
+            {
+                Print("Please enter the name correctly!!!");
+                str = Console.ReadLine();
+            }
+
+            return str;
         }
 
         public int GetIntValue()
         {
-
-            if (int.TryParse(Console.ReadLine(), out int num))
+            int num;
+            while (!int.TryParse(Console.ReadLine(), out num))
             {
-                return num;
+                Print("Please enter number!!!");              
             }
-            else
-            {
-                Print("Please enter number!!!");
-                return -1;
-            }
+            return num;
         }
 
         public bool CheckInput(string str)
@@ -43,5 +47,14 @@ namespace KennelLibrary
                 return false;
             }
         }
+
+
+        public void OwnerInfo(IOwner owner)
+        {
+            Print(String.Format(" {0,-20}  {1,-30}  {2,-30}", $"Name", $"Num of animals", $"Id\n"));
+            Print(String.Format(" {0,-20}  {1,-30}  {2,-30}", $"{owner.OwnerName}", $"{owner.NumberOfAnimals}", $"{owner.OwnerId}\n"));
+        }
+
+       
     }
 }

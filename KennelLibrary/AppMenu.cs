@@ -26,6 +26,8 @@ namespace KennelLibrary
             _menuManager.CreateMenuItem(2, "Register an animal");
             _menuManager.CreateMenuItem(3, "List all owners");
             _menuManager.CreateMenuItem(4, "List all animals");
+            _menuManager.CreateMenuItem(5, "Find the owner");
+            _menuManager.CreateMenuItem(6, "Report presence");
             _menuManager.ShowMenu();
         }
 
@@ -42,13 +44,13 @@ namespace KennelLibrary
                     case "1":
                         Console.Clear();
                         _menuManager.ShowMenu();
-                        _registerManager.RegisterOwner(owners);
+                        _registerManager.RegisterOwner(owners, animals);
                         break;
 
                     case "2":
                         Console.Clear();
                         _menuManager.ShowMenu();
-                        _registerManager.RegisterAnimal(animals);
+                        _registerManager.RegisterAnimal(owners, animals);
                         break;
 
                     case "3":
@@ -61,6 +63,18 @@ namespace KennelLibrary
                         Console.Clear();
                         _menuManager.ShowMenu();
                         _menuManager.ListAnimals(animals);
+                        break;
+
+                    case "5":
+                        Console.Clear();
+                        _menuManager.ShowMenu();
+                        _registerManager.FindOwner(animals, owners);
+                        break;
+
+                    case "6":
+                        Console.Clear();
+                        _menuManager.ShowMenu();
+                        _registerManager.Report(animals);
                         break;
                 }
             }

@@ -13,5 +13,10 @@ namespace KennelLibrary
         public List<IAnimal> Animals { get; set; }
         public int NumberOfAnimals { get; set; }
 
+        public Owner()
+        {
+            List<IAnimal> list = new();
+        }
+
     }
 }
