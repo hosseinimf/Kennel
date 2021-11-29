@@ -8,14 +8,15 @@ namespace KennelLibrary
 {
     public class MenuManager : IMenuManager
     {
-        Services services = new Services();
+        private IServices s;
         private IMenu _menu;
         private Func<int, string, IMenuItem> _menuItemCreator;
 
-        public MenuManager(IMenu menu, Func<int, string, IMenuItem> menuItemCreator)
+        public MenuManager(IMenu menu, Func<int, string, IMenuItem> menuItemCreator, IServices services)
         {
             _menu = menu;
             _menuItemCreator = menuItemCreator;
+            s = services;
         }
 
 
@@ -35,37 +36,46 @@ namespace KennelLibrary
 
         public void ShowMenu()
         {
-            services.Print($"--------------- {_menu.Title} ----------------");
+            s.Print($"----------------- {_menu.Title} ------------------");
 
             foreach (var menuItem in _menu.MenuItems)
             {
-                services.Print(String.Format(" --> {0,-10}  {1,-10}", $"{menuItem.Choice}", $"{menuItem.ItemName}"));
+                s.Print(String.Format(" --> {0,-10}  {1,-10}", $"{menuItem.Choice}", $"{menuItem.ItemName}"));
             }
 
-            services.Print($"--------------- {_menu.Footer} ----------------\n");
+            s.Print($"----------------- {_menu.Footer} ------------------\n");
 
         }
 
 
-        public void ListOwners(List<IOwner> OwnerList)
+        public void ListOwners(List<IOwner> ownerList, List<IAnimal> animalList)
         {
-            services.Print("---------------LIST OF OWNERS----------------");
-            services.Print(String.Format(" {0,-20}  {1,-30}", $"Owner name", $"Owner Id\n"));
-            foreach (var item in OwnerList)
+            s.Print("-----------------LIST OF OWNERS------------------");
+            s.Print(String.Format(" {0,-10}  {1,-20}", $"Owner name", $"Owner Id\n"));
+            foreach (var item in ownerList)
             {
-                services.Print(String.Format(" {0,-20}  {1,-30}", $"{item.OwnerName}", $"{item.OwnerId}"));
+                s.Print("------------------------------");
+                var pets = animalList.Where(a => a.OwnerId == item.OwnerId);
+                s.Print(String.Format(" {0,-10}  {1,-20}", $"{item.OwnerName}", $"{item.OwnerId}"));
+
+                s.Print(" Pets: ");
+                foreach (var pet in pets)
+                {
+                    s.Print(" " + pet.Name + " ");
+                }
+                s.Print("------------------------------");
             }
         }
 
 
         public void ListAnimals(List<IAnimal> AnimalList)
         {
-            services.Print("---------------LIST OF Animals----------------");
-            services.Print(String.Format(" {0,-20}  {1,-30}   {2,-30}", $"Animal", $"Owner", $"Status\n"));
+            s.Print("---------------LIST OF Animals----------------");
+            s.Print(String.Format(" {0,-20}  {1,-30}   {2,-30}", $"Animal", $"Owner", $"Status\n"));
 
             foreach (var item in AnimalList)
             {
-                services.Print(String.Format(" {0,-20}  {1,-30}   {2,-30}", $"{item.Name}", $"{item.OwnerName}", $"{item.ShowStatus()}"));
+                s.Print(String.Format(" {0,-20}  {1,-30}   {2,-30}", $"{item.Name}", $"{item.OwnerName}", $"{item.ShowStatus()}"));
             }
         }
 
@@ -73,18 +83,18 @@ namespace KennelLibrary
         public void ListAllAttendantAnimals(List<IAnimal> animalList)
         {
             var attendants = animalList.Where(a => a.Status == true);
-            services.Print("---------------- All attendant pets at Kennel ----------------\n");
+            s.Print("---------------- All attendant pets at Kennel ----------------\n");
             if (attendants.Count() > 0 )
             {
-                services.Print(String.Format(" {0,-20}  {1,-20}   {2,-20}", $"Animal", $"Owner", $"Status\n"));
+                s.Print(String.Format(" {0,-20}  {1,-20}   {2,-20}", $"Animal", $"Owner", $"Status\n"));
                 foreach (var item in attendants)
                 {
-                    services.Print(String.Format(" {0,-20}  {1,-20}   {2,-20}", $"{item.Name}", $"{item.OwnerName}", $"{item.ShowStatus()}"));
+                    s.Print(String.Format(" {0,-20}  {1,-20}   {2,-20}", $"{item.Name}", $"{item.OwnerName}", $"{item.ShowStatus()}"));
                 }
             }
             else
             {
-                services.Print("\n There is no pet at kennel at the moment!!!");
+                s.Print("\n There is no pet at kennel at the moment!!!");
             }
             
         }

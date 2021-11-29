@@ -31,6 +31,7 @@ namespace KennelLibrary
             _menuManager.CreateMenuItem(5, "Find the owner");
             _menuManager.CreateMenuItem(6, "Report presence");
             _menuManager.CreateMenuItem(7, "List all attendants at kennel");
+            _menuManager.CreateMenuItem(8, "Add a service");
             _menuManager.ShowMenu();
             _registerManager.SeedOwner(owners, animals);
         }
@@ -60,7 +61,7 @@ namespace KennelLibrary
                     case "3":
                         Console.Clear();
                         _menuManager.ShowMenu();
-                        _menuManager.ListOwners(owners);
+                        _menuManager.ListOwners(owners, animals);
                         break;
 
                     case "4":
@@ -92,46 +93,15 @@ namespace KennelLibrary
                         _menuManager.ShowMenu();
                         _registerManager.AddService(animals);
                         break;
+
+                    case "e":
+                        Console.Clear();
+                        _menuManager.ShowMenu();
+                        exit = true;
+                        break;
                 }
             }
 
         }
-
-
-
-
-        //public void UserChoice()
-        //{
-        //    while (true)
-        //    {
-        //        var input = Console.ReadKey(true);
-
-        //        foreach (var menuItem in _menuManager.GetMenu().MenuItems)
-        //        {
-        //            if (input.KeyChar.ToString() == "1")
-        //            {
-        //                Console.Clear();
-        //                _menuManager.ShowMenu();
-        //                _registerManager.RegisterOwner(owners);
-        //            }
-        //            else if (input.KeyChar.ToString() == "2")
-        //            {
-        //                Console.Clear();
-        //                _menuManager.ShowMenu();
-        //                _registerManager.RegisterAnimal(animals);
-        //            }
-        //            else if (input.KeyChar.ToString() == "3")
-        //            {
-
-        //                _menuManager.ListOwners(owners);
-        //            }
-        //            else if (input.KeyChar == 'e')
-        //            {
-        //                Environment.Exit(0);
-        //            }
-        //        }
-        //    }
-
-        //}
     }
 }

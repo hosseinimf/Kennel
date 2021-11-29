@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace KennelLibrary
 {
-    public class Services
+    public class Services : IServices
     {
         public void Print(string message)
         {
-            Console.WriteLine(message);
+            Console.WriteLine($"  {message}");
         }
 
 
@@ -33,7 +33,7 @@ namespace KennelLibrary
             int num;
             while (!int.TryParse(Console.ReadLine(), out num))
             {
-                Print("Please enter number!!!");              
+                Print("Please enter number!!!");
             }
             return num;
         }
@@ -54,10 +54,17 @@ namespace KennelLibrary
 
         public void OwnerInfo(IOwner owner)
         {
-            Print(String.Format(" {0,-20}  {1,-30}  {2,-30}", $"Name", $"Num of animals", $"Id\n"));
-            Print(String.Format(" {0,-20}  {1,-30}  {2,-30}", $"{owner.OwnerName}", $"{owner.NumberOfAnimals}", $"{owner.OwnerId}\n"));
+            Print(String.Format(" {0,-10}  {1,-20}  {2,-20}", $"Name", $"Num of animals", $"Id\n"));
+            Print(String.Format(" {0,-10}  {1,-20}  {2,-20}", $"{owner.OwnerName}", $"{owner.NumberOfAnimals}", $"{owner.OwnerId}\n"));           
         }
 
-       
+
+        public int IdIncrement(List<IOwner> ownerList)
+        {
+            var lastId = ownerList[ownerList.Count - 1].OwnerId;
+            return lastId + 1;
+        }
+
+
     }
 }
