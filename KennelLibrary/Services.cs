@@ -13,6 +13,7 @@ namespace KennelLibrary
             Console.WriteLine(message);
         }
 
+
         public string GetStringValue()
         {
             string str = Console.ReadLine();
@@ -26,6 +27,7 @@ namespace KennelLibrary
             return str;
         }
 
+
         public int GetIntValue()
         {
             int num;
@@ -35,6 +37,7 @@ namespace KennelLibrary
             }
             return num;
         }
+
 
         public bool CheckInput(string str)
         {

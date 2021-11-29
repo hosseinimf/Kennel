@@ -12,6 +12,8 @@ namespace KennelLibrary
         private IRegisterManager _registerManager;
         List<IOwner> owners = new List<IOwner>();
         List<IAnimal> animals = new List<IAnimal>();
+        int[] kennelServices = new int[3] { 0, 0, 0 };
+
 
         public AppMenu(IMenuManager menuManager, IRegisterManager registerManager)
         {
@@ -28,7 +30,9 @@ namespace KennelLibrary
             _menuManager.CreateMenuItem(4, "List all animals");
             _menuManager.CreateMenuItem(5, "Find the owner");
             _menuManager.CreateMenuItem(6, "Report presence");
+            _menuManager.CreateMenuItem(7, "List all attendants at kennel");
             _menuManager.ShowMenu();
+            _registerManager.SeedOwner(owners, animals);
         }
 
         public void UserChoice()
@@ -75,6 +79,18 @@ namespace KennelLibrary
                         Console.Clear();
                         _menuManager.ShowMenu();
                         _registerManager.Report(animals);
+                        break;
+
+                    case "7":
+                        Console.Clear();
+                        _menuManager.ShowMenu();
+                        _menuManager.ListAllAttendantAnimals(animals);
+                        break;
+
+                    case "8":
+                        Console.Clear();
+                        _menuManager.ShowMenu();
+                        _registerManager.AddService(animals);
                         break;
                 }
             }

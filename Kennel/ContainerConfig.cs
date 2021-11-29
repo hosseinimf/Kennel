@@ -20,6 +20,7 @@ namespace Kennel
             builder.RegisterType<Animal>().As<IAnimal>();
             builder.RegisterType<RegisterManager>().As<IRegisterManager>();
             builder.RegisterType<MenuManager>().As<IMenuManager>();
+            builder.RegisterType<KennelServices>().As<IKennelServices>();
             builder.RegisterType<AppMenu>().As<IAppMenu>();
             builder.RegisterType<Application>().As<IApplication>();
 
