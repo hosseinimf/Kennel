@@ -8,9 +8,9 @@ namespace KennelLibrary
 {
     public class MenuManager : IMenuManager
     {
-        private IServices s;
-        private IMenu _menu;
-        private Func<int, string, IMenuItem> _menuItemCreator;
+        private readonly IServices s;
+        private readonly IMenu _menu;
+        private readonly Func<int, string, IMenuItem> _menuItemCreator;
 
         public MenuManager(IMenu menu, Func<int, string, IMenuItem> menuItemCreator, IServices services)
         {
@@ -99,11 +99,6 @@ namespace KennelLibrary
             
         }
 
-
-        public IMenu GetMenu()
-        {
-            return _menu;
-        }
 
     }
 }

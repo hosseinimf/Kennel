@@ -10,15 +10,17 @@ namespace KennelLibrary
     {
         private IMenuManager _menuManager;
         private IRegisterManager _registerManager;
+        private IKennelServices _kennelServices;
+
         List<IOwner> owners = new List<IOwner>();
         List<IAnimal> animals = new List<IAnimal>();
-        int[] kennelServices = new int[3] { 0, 0, 0 };
 
 
-        public AppMenu(IMenuManager menuManager, IRegisterManager registerManager)
+        public AppMenu(IMenuManager menuManager, IRegisterManager registerManager, IKennelServices kennelServices)
         {
             _menuManager = menuManager;
             _registerManager = registerManager;
+            _kennelServices = kennelServices;
         }
 
         public void Initialize()
@@ -33,7 +35,9 @@ namespace KennelLibrary
             _menuManager.CreateMenuItem(7, "List all attendants at kennel");
             _menuManager.CreateMenuItem(8, "Add a service");
             _menuManager.ShowMenu();
-            _registerManager.SeedOwner(owners, animals);
+
+            //To put a few pets and owners to the list just for test
+            Seed.SeedOwner(owners, animals);
         }
 
         public void UserChoice()
@@ -79,7 +83,7 @@ namespace KennelLibrary
                     case "6":
                         Console.Clear();
                         _menuManager.ShowMenu();
-                        _registerManager.Report(animals);
+                        _registerManager.RegisterAttendancy(animals);
                         break;
 
                     case "7":
@@ -91,7 +95,7 @@ namespace KennelLibrary
                     case "8":
                         Console.Clear();
                         _menuManager.ShowMenu();
-                        _registerManager.AddService(animals);
+                        _kennelServices.AddService(animals);
                         break;
 
                     case "e":

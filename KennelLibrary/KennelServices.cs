@@ -59,6 +59,66 @@ namespace KennelLibrary
         }
 
 
+        public void AddService(List<IAnimal> animals)
+        {
+            var pet = GetAnimal(animals);
+
+            if (pet is not null)
+            {
+                //pet.Services = new int[3];
+                bool exit = false;
+                s.Print(" Select the service: ");
+                s.Print(" w: washing   t: Claw Trimming    g: Pet Grooming    e: exit");
+                var input = Console.ReadKey(true);
+
+                while (!exit)
+                {
+                    if (input.KeyChar.ToString().ToLower() == "w")
+                    {
+                        if (AddWashing(pet))
+                        {
+                            s.Print($"a washing service is added for pet name: {pet.Name}.");
+                        }
+                        animals[animals.IndexOf(pet)].Services[0] = pet.Services[0];
+                        exit = true;
+                    }
+                    else if (input.KeyChar.ToString().ToLower() == "t")
+                    {
+                        if (AddClawTrimming(pet))
+                        {
+                            s.Print($"a trimming service is added for pet name: {pet.Name}.");
+                        }
+                        animals[animals.IndexOf(pet)].Services[1] = pet.Services[1];
+                        exit = true;
+                    }
+                    else if (input.KeyChar.ToString().ToLower() == "g")
+                    {
+                        if (AddPetGrooming(pet))
+                        {
+                            s.Print($"a grooming service is added for pet name: {pet.Name}.");
+                        }
+                        animals[animals.IndexOf(pet)].Services[2] = pet.Services[2];
+                        exit = true;
+                    }
+                    else if (input.KeyChar.ToString().ToLower() == "e")
+                    {
+                        exit = true;
+                    }
+                    else
+                    {
+                        s.Print("Choose one of  w: washing   t: Claw Trimming    g: Pet Grooming    e: exit");
+                        input = Console.ReadKey(true);
+                    }
+                }
+            }
+            else
+            {
+                s.Print("There is no pet with this name.");
+            }
+
+        }
+
+
         public void GetReceipt(IAnimal pet)
         {
             int washingCharge = 0;
@@ -83,6 +143,19 @@ namespace KennelLibrary
             s.Print($"Total Cost is: {washingCharge + trimmingCharge + groomingCharge + dailyCharge} kr");
             s.Print("-------------------- Receipt --------------------\n");
 
+        }
+
+
+        public IAnimal GetAnimal(List<IAnimal> animals)
+        {
+            s.Print("Enter the pets name: ");
+            string str = s.GetStringValue().ToLower();
+            var index = animals.IndexOf(animals.Where(a => a.Name.ToLower() == str).FirstOrDefault());
+
+            if (index > -1)
+                return animals[index];
+            else
+                return null;
         }
     }
 }

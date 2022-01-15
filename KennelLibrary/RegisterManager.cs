@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autofac;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,9 @@ namespace KennelLibrary
 {
     public class RegisterManager : IRegisterManager
     {
-        private IServices s;
-        IKennelServices _kennelServices;
+        private readonly IServices s;
+        private readonly IKennelServices _kennelServices;
+
 
         public RegisterManager(IKennelServices kennelServices, IServices services)
         {
@@ -20,9 +22,9 @@ namespace KennelLibrary
 
         public void RegisterOwner(List<IOwner> ownerList, List<IAnimal> animalList)
         {
-            IOwner owner = new Owner();
-            
-            
+            var container = ContainerConfig.Configure();
+            var owner = container.Resolve<IOwner>();
+
             int num;
            
             s.Print("Please enter your name:");
@@ -41,7 +43,7 @@ namespace KennelLibrary
 
             for (int i = 0; i < num; i++)
             {
-                IAnimal pet = new Animal();
+                var pet = container.Resolve<IAnimal>();
                 s.Print("Please enter your pet name:");
                 pet.Name = s.GetStringValue();
                 pet.OwnerName = owner.OwnerName;
@@ -56,9 +58,11 @@ namespace KennelLibrary
 
         public void RegisterAnimal(List<IOwner> ownerList, List<IAnimal> animalList)
         {
-            IAnimal animal = new Animal();
-            IOwner owner = new Owner();
+            var container = ContainerConfig.Configure();
+            var animal = container.Resolve<IAnimal>();
+            var owner = container.Resolve<IOwner>();
 
+            
             s.Print("Please enter pets name: ");
             animal.Name = s.GetStringValue();
 
@@ -107,10 +111,9 @@ namespace KennelLibrary
         }
 
 
-        public void Report(List<IAnimal> animalList)
+        public void RegisterAttendancy(List<IAnimal> animalList)
         {
-            IAnimal pet = new Animal();
-           
+            
             s.Print("\n Enter your pets name: ");
             string str = s.GetStringValue().ToLower();
 
@@ -119,7 +122,7 @@ namespace KennelLibrary
             if (index > -1)
             {
                 s.Print("\n Press 'l or L' to leave the pet at Kennel");
-                s.Print(" Press 'p or P' to pich up the pet from Kennel");
+                s.Print(" Press 'p or P' to pick up the pet from Kennel");
                 var input = Console.ReadKey(true);
 
                 while (!(input.KeyChar.ToString().ToLower() == "l") == !(input.KeyChar.ToString().ToLower() == "p"))
@@ -151,93 +154,6 @@ namespace KennelLibrary
             
 
         }
-
-
-        public void SeedOwner(List<IOwner> ownerList, List<IAnimal> animalList)
-        {
-            ownerList.Add(new Owner { OwnerId = 101, OwnerName = "Anders", NumberOfAnimals = 1 });
-            ownerList.Add(new Owner { OwnerId = 102, OwnerName = "Peter", NumberOfAnimals = 1 });
-            ownerList.Add(new Owner { OwnerId = 103, OwnerName = "Johan", NumberOfAnimals = 1 });
-
-            animalList.Add(new Animal { AnimalId = 1, Name = "Piti", OwnerName = "Anders", OwnerId = 101, Status = false, Services = new int[3] { 0, 0, 0 } });
-            animalList.Add(new Animal { AnimalId = 2, Name = "siti", OwnerName = "Peter", OwnerId = 102, Status = false, Services = new int[3] { 0, 0, 0 } });
-            animalList.Add(new Animal { AnimalId = 3, Name = "lili", OwnerName = "Linda", OwnerId = 103, Status = false, Services = new int[3] { 0, 0, 0 } });
-        }
-
-
-        public void AddService(List<IAnimal> animals)
-        {
-            var pet = GetAnimal(animals);
-
-            if (pet is not null)
-            {
-                //pet.Services = new int[3];
-                bool exit = false;
-                s.Print(" Select the service: ");
-                s.Print(" w: washing   t: Claw Trimming    g: Pet Grooming    e: exit");
-                var input = Console.ReadKey(true);
-
-                while (!exit)
-                {
-                    if (input.KeyChar.ToString().ToLower() == "w")
-                    {
-                        if (_kennelServices.AddWashing(pet))
-                        {
-                            s.Print($"a washing service is added for pet name: {pet.Name}.");
-                        }
-                        animals[animals.IndexOf(pet)].Services[0] = pet.Services[0];
-                        exit = true;
-                    }
-                    else if (input.KeyChar.ToString().ToLower() == "t")
-                    {
-                        if (_kennelServices.AddClawTrimming(pet))
-                        {
-                            s.Print($"a trimming service is added for pet name: {pet.Name}.");
-                        }
-                        animals[animals.IndexOf(pet)].Services[1] = pet.Services[1];
-                        exit = true;
-                    }
-                    else if (input.KeyChar.ToString().ToLower() == "g")
-                    {
-                        if (_kennelServices.AddPetGrooming(pet))
-                        {
-                            s.Print($"a grooming service is added for pet name: {pet.Name}.");
-                        }
-                        animals[animals.IndexOf(pet)].Services[2] = pet.Services[2];
-                        exit = true;
-                    }
-                    else if (input.KeyChar.ToString().ToLower() == "e")
-                    {                       
-                        exit = true;
-                    }
-                    else
-                    {
-                        s.Print("Choose one of  w: washing   t: Claw Trimming    g: Pet Grooming    e: exit");
-                        input = Console.ReadKey(true);
-                    }
-                }
-            }
-            else
-            {
-                s.Print("There is no pet with this name.");
-            }
-            
-        }
-
-
-        public IAnimal GetAnimal(List<IAnimal> animals)
-        {
-            s.Print("Enter the pets name: ");
-            string str = s.GetStringValue().ToLower();
-            var index = animals.IndexOf(animals.Where(a => a.Name.ToLower() == str).FirstOrDefault());
-
-            if (index > -1)
-                return animals[index];
-            else
-                return null;
-        }
-
-
 
     }
 }

@@ -61,8 +61,16 @@ namespace KennelLibrary
 
         public int IdIncrement(List<IOwner> ownerList)
         {
-            var lastId = ownerList[ownerList.Count - 1].OwnerId;
-            return lastId + 1;
+            
+            if(ownerList.Count > 0)
+            {
+                return ownerList[ownerList.Count - 1].OwnerId + 1;
+            }
+            else
+            {
+                return 101;
+            }
+
         }
 
 
